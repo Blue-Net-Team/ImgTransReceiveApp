@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ImgTrans</string>
+    <string name="button_1">+</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="peer_ip">对端ip地址</string>
+    <string name="input_peer_ip">请输入对端ip地址</string>
+    <string name="add_peer">添加对端服务器</string>
+    <string name="port_opened">本机开放的端口</string>
+    <string name="opened_port_str">输入本机接受数据的端口</string>
+    <string name="add">确认添加</string>
+    <string name="img_receive">imgReceive</string>
+    <string name="socket">关闭socket</string>
+
+</resources>
