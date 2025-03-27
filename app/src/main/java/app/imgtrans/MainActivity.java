@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     // 关闭连接按钮
     private Button closeBtn;
 
+    // 删除按钮
+    private Button delBtn;
+
     private Receiver rec = null;
 
     @Override
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         menuContainer = findViewById(R.id.menu_container);
         ImageView imageView = findViewById(R.id.imageView);
         closeBtn = findViewById(R.id.close);
+        delBtn = findViewById(R.id.del_btn);
 
         setSupportActionBar(toolbar);
 
@@ -125,6 +129,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 删除按钮的点击跳转
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, del_server_view.class);
+                startActivity(intent);
+            }
+        });
+
         // 关闭连接按钮
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
             // 动态加载菜单项
             loadMenuItems();
         }
-
 
         // 开始监听文件变化
         startFileObserver();
@@ -171,35 +183,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 读取服务器信息
-     */
-    public void readServerInfo() {
-        try {
-            FileInputStream fis = openFileInput("server_info");
-            int character;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((character = fis.read()) != -1) {
-                stringBuilder.append((char) character);
-            }
-            fis.close();
-            String result = stringBuilder.toString();
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "readServerInfo: file not found");
-        } catch (IOException e){
-            Log.e(TAG, "readServerInfo: read file failed");
-        }
-    }
-
-    /**
      * 读取文件并动态加载菜单项
      */
     public void loadMenuItems() {
         List<String> menuItems = readMenuFromFile();  // 读取文件
+        // 获取 NavigationView 的 Menu
+        Menu menu = navigationView.getMenu();
+        menu.clear();  // 清空现有的菜单项（如果有）
+        if (menuItems.isEmpty()){
+            menuContainer.removeAllViews();
+            showEmptyMenuMessage();
+        }
         if (menuItems != null && !menuItems.isEmpty()) {
-            // 获取 NavigationView 的 Menu
-            Menu menu = navigationView.getMenu();
-            menu.clear();  // 清空现有的菜单项（如果有）
-
             // 遍历菜单项并动态添加
             for (int i = 0; i < menuItems.size(); i++) {
                 // 生成唯一的ID
