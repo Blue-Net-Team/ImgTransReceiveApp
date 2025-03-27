@@ -142,7 +142,11 @@ public class MainActivity extends AppCompatActivity {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rec.close();
+                if (rec != null) {
+                    rec.close();
+                } else {
+                    Toast.makeText(MainActivity.this, "未连接", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
