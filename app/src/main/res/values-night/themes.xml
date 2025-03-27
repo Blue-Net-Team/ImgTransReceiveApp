@@ -3,5 +3,9 @@
     <style name="Base.Theme.ImgTrans" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/buttonTextColor</item> <!-- Set button text color -->
     </style>
 </resources>
