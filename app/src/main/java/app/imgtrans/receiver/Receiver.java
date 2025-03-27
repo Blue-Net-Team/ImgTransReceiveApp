@@ -23,6 +23,7 @@ public class Receiver {
     private String serverIp;
 
     private boolean receiveFlag = true;
+    private DatagramSocket socket; // DatagramSocket instance
 
     /**
      * 构造函数
@@ -50,7 +51,7 @@ public class Receiver {
             @Override
             public void run() {
                 try {
-                    DatagramSocket socket = new DatagramSocket(UDP_PORT);
+                    socket = new DatagramSocket(UDP_PORT);
                     socket.setSoTimeout(3000);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -109,16 +110,23 @@ public class Receiver {
                                 }
                             });
                         }
-
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     Log.e("Receiver", "run: ", e);
-                    String error = e.getMessage();
-                    Toast.makeText(
-                            imageView.getContext(),
-                            "Error: " + error,
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    imageView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(
+                                    imageView.getContext(),
+                                    "Error: " + e.getMessage(),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    });
+                } finally {
+                    if (socket != null && !socket.isClosed()) {
+                        socket.close();
+                    }
                 }
             }
         }).start();
@@ -128,6 +136,10 @@ public class Receiver {
      * 停止接收数据
      */
     public void close() {
+        receiveFlag = false;
+        if (socket != null && !socket.isClosed()) {
+            socket.close();
+        }
         final Bitmap closedBitmap = BitmapFactory.decodeResource(imageView.getResources(), R.drawable.closed);
         imageView.post(new Runnable() {
             @Override
@@ -135,6 +147,5 @@ public class Receiver {
                 imageView.setImageBitmap(closedBitmap);
             }
         });
-        receiveFlag = false;
     }
 }
