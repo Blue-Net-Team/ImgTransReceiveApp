@@ -158,8 +158,13 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         textView.setText("没有添加任何服务器信息");
         textView.setTextSize(16);
-        textView.setTextColor(getResources().getColor(android.R.color.black));
+        // 居中显示
         textView.setGravity(Gravity.CENTER);
+        // 垂直居中
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
 
         // 将 TextView 添加到容器中
         menuContainer.addView(textView);
